@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  
+  --color-dark-bg: #030510;
+  --color-primary: #a855f7;
+  --color-primary-hover: #9333ea;
+  --color-secondary: #3b82f6;
+  --color-secondary-hover: #2563eb;
+  --color-dark-card: rgba(10, 15, 30, 0.4);
+  --color-dark-border: rgba(168, 85, 247, 0.15);
+  
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-delayed: float-delayed 8s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 10s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-25px) scale(0.95);
+  }
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.15) translate(20px, -20px);
+  }
+}
+
+/* Custom CSS Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #030510;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.3);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.6);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  background: radial-gradient(circle at 50% 0%, #060b26 0%, #030510 50%, #010103 100%);
+  min-height: 100vh;
+}
+
+body {
+  color: #e2e8f0;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background: radial-gradient(circle at 50% 0%, #060b26 0%, #030510 50%, #010103 100%);
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Custom Glassmorphism Utility */
+.glass-panel {
+  background: rgba(10, 15, 30, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(168, 85, 247, 0.12);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(168, 85, 247, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(168, 85, 247, 0.15);
+}
+
+/* Grid Pattern Background */
+.grid-bg {
+  background-size: 50px 50px;
+  background-image: linear-gradient(to right, rgba(168, 85, 247, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(168, 85, 247, 0.02) 1px, transparent 1px);
+}
+
+/* Custom Text Gradient */
+.text-gradient {
+  background: linear-gradient(135deg, #c084fc 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glow gradient highlights */
+.glow-blob {
+  filter: blur(120px);
+  opacity: 0.45;
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+}
+
+/* Scroll Animation Class */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Infinite Marquee Scroller */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
