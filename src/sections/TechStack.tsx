@@ -265,6 +265,15 @@ export const TechStack: React.FC = () => {
     }
   };
 
+  const getMarqueeItems = <T,>(items: T[], minItems = 12): T[] => {
+    let list = [...items];
+    if (list.length === 0) return [];
+    while (list.length < minItems) {
+      list = [...list, ...items];
+    }
+    return list;
+  };
+
   const integrations: IntegrationItem[] = [
     {
       title: 'Google Maps API',
@@ -444,41 +453,51 @@ export const TechStack: React.FC = () => {
           ))}
         </div>
 
-        {/* Technologies Dynamic Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-20 reveal">
-          {getFilteredTech().map((tech, idx) => (
-            <div
-              key={tech.name + idx}
-              className="glass-panel p-5 rounded-2xl flex flex-col items-center justify-between text-center relative overflow-hidden group hover:-translate-y-2 hover:bg-slate-900/60 transition-all duration-300"
-            >
-              {/* Subtle tech specific color gradient glow on hover */}
-              <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-10 blur-md rounded-full transition-opacity duration-300`} />
-              
-              {/* Tech Icon wrapper */}
-              <div className="p-3 bg-slate-950/60 rounded-xl border border-dark-border/20 mb-3.5 group-hover:scale-110 transition-transform duration-300 group-hover:border-primary/40 shadow-inner">
-                {tech.icon}
-              </div>
-
-              {/* Name */}
-              <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">
-                {tech.name}
-              </span>
-
-              {/* Progress Indicator */}
-              <div className="w-full mt-3">
-                <div className="flex justify-between items-center text-[9px] text-gray-500 font-bold mb-1 px-1">
-                  <span>EXP</span>
-                  <span className="text-purple-300/80">{tech.proficiency}%</span>
-                </div>
-                <div className="h-1 w-full bg-slate-950 rounded-full overflow-hidden border border-white/5">
+        {/* Technologies Dynamic Marquee */}
+        <div className="relative w-full overflow-hidden mb-20 py-4 reveal">
+          {/* Fading gradients at the edges */}
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-dark-bg to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-bg to-transparent z-10 pointer-events-none" />
+          
+          <div className="animate-marquee flex gap-4 w-max py-2">
+            {[...Array(2)].map((_, groupIdx) => (
+              <div key={groupIdx} className="flex gap-4 px-2">
+                {getMarqueeItems(getFilteredTech()).map((tech, idx) => (
                   <div
-                    className={`h-full bg-gradient-to-r ${tech.color} rounded-full`}
-                    style={{ width: `${tech.proficiency}%` }}
-                  />
-                </div>
+                    key={`${tech.name}-${groupIdx}-${idx}`}
+                    className="glass-panel p-5 rounded-2xl flex flex-col items-center justify-between text-center relative overflow-hidden group hover:-translate-y-2 hover:bg-slate-900/60 transition-all duration-300 w-[150px] shrink-0"
+                  >
+                    {/* Subtle tech specific color gradient glow on hover */}
+                    <div className={`absolute -bottom-6 -left-6 w-16 h-16 bg-gradient-to-br ${tech.color} opacity-0 group-hover:opacity-10 blur-md rounded-full transition-opacity duration-300`} />
+                    
+                    {/* Tech Icon wrapper */}
+                    <div className="p-3 bg-slate-950/60 rounded-xl border border-dark-border/20 mb-3.5 group-hover:scale-110 transition-transform duration-300 group-hover:border-primary/40 shadow-inner">
+                      {tech.icon}
+                    </div>
+
+                    {/* Name */}
+                    <span className="text-xs font-semibold text-gray-300 group-hover:text-white transition-colors duration-300">
+                      {tech.name}
+                    </span>
+
+                    {/* Progress Indicator */}
+                    <div className="w-full mt-3">
+                      <div className="flex justify-between items-center text-[9px] text-gray-500 font-bold mb-1 px-1">
+                        <span>EXP</span>
+                        <span className="text-purple-300/80">{tech.proficiency}%</span>
+                      </div>
+                      <div className="h-1 w-full bg-slate-950 rounded-full overflow-hidden border border-white/5">
+                        <div
+                          className={`h-full bg-gradient-to-r ${tech.color} rounded-full`}
+                          style={{ width: `${tech.proficiency}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Premium Horizontal Marquee Banner */}
@@ -529,39 +548,51 @@ export const TechStack: React.FC = () => {
           <div className="h-1 w-12 bg-gradient-to-r from-secondary to-purple-500 mx-auto mt-3 rounded-full" />
         </div>
 
-        {/* Integrations Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal">
-          {integrations.map((item, idx) => (
-            <div
-              key={item.title + idx}
-              className="glass-panel p-6 rounded-2xl flex flex-col space-y-4 hover:-translate-y-2 hover:bg-slate-900/60 transition-all duration-300 relative overflow-hidden group border border-white/5 hover:border-secondary/35 hover:shadow-lg hover:shadow-secondary/5"
-            >
-              {/* Side highlight gradient matching integration theme */}
-              <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 blur-2xl rounded-full transition-opacity duration-300`} />
-              
-              {/* Header: Icon & Title */}
-              <div className="flex items-center space-x-4">
-                <div className="p-3 bg-slate-950/60 rounded-xl border border-dark-border/20 text-secondary group-hover:text-white transition-all group-hover:scale-105 group-hover:border-secondary/40 shadow-inner">
-                  {item.icon}
-                </div>
-                <h4 className="font-bold text-base text-white group-hover:text-secondary transition-colors duration-300">
-                  {item.title}
-                </h4>
-              </div>
+        {/* Integrations Dynamic Marquee */}
+        <div className="relative w-full overflow-hidden py-4 reveal">
+          {/* Fading gradients at the edges */}
+          <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-dark-bg to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-dark-bg to-transparent z-10 pointer-events-none" />
+          
+          <div className="animate-marquee flex gap-6 w-max py-2">
+            {[...Array(2)].map((_, groupIdx) => (
+              <div key={groupIdx} className="flex gap-6 px-3">
+                {getMarqueeItems(integrations).map((item, idx) => (
+                  <div
+                    key={`${item.title}-${groupIdx}-${idx}`}
+                    className="glass-panel p-6 rounded-2xl flex flex-col justify-between space-y-4 hover:-translate-y-2 hover:bg-slate-900/60 transition-all duration-300 relative overflow-hidden group border border-white/5 hover:border-secondary/35 hover:shadow-lg hover:shadow-secondary/5 w-[280px] sm:w-[320px] shrink-0"
+                  >
+                    <div>
+                      {/* Side highlight gradient matching integration theme */}
+                      <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${item.color} opacity-0 group-hover:opacity-5 blur-2xl rounded-full transition-opacity duration-300`} />
+                      
+                      {/* Header: Icon & Title */}
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 bg-slate-950/60 rounded-xl border border-dark-border/20 text-secondary group-hover:text-white transition-all group-hover:scale-105 group-hover:border-secondary/40 shadow-inner">
+                          {item.icon}
+                        </div>
+                        <h4 className="font-bold text-base text-white group-hover:text-secondary transition-colors duration-300">
+                          {item.title}
+                        </h4>
+                      </div>
 
-              {/* Description */}
-              <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300">
-                {item.description}
-              </p>
-              
-              {/* Footer status pill */}
-              <div className="flex justify-end pt-2">
-                <span className="inline-flex items-center gap-1 text-[9px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
-                  <ShieldCheck className="w-2.5 h-2.5" /> Production Ready
-                </span>
+                      {/* Description */}
+                      <p className="text-xs text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors duration-300 mt-4">
+                        {item.description}
+                      </p>
+                    </div>
+                    
+                    {/* Footer status pill */}
+                    <div className="flex justify-end pt-2">
+                      <span className="inline-flex items-center gap-1 text-[9px] font-bold tracking-wider text-emerald-400 uppercase bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
+                        <ShieldCheck className="w-2.5 h-2.5" /> Production Ready
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
       </div>
