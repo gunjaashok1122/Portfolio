@@ -323,8 +323,16 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
   useEffect(() => {
     const docRef = doc(db, 'portfolio', 'data');
     
+    // Safety timeout: if Firestore takes > 3 seconds, bypass the loading screen and use static data
+    const safetyTimeout = setTimeout(() => {
+      console.warn("Firestore connection timed out. Displaying cached offline portfolio data.");
+      setData(initialData);
+      setLoading(false);
+    }, 3000);
+
     // Subscribe to document changes
     const unsubscribe = onSnapshot(docRef, async (snapshot) => {
+      clearTimeout(safetyTimeout);
       if (snapshot.exists()) {
         setData(snapshot.data() as PortfolioData);
         setLoading(false);
@@ -336,17 +344,23 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           setData(initialData);
         } catch (error) {
           console.error("Error seeding initial data to Firestore: ", error);
+          // Fall back anyway if seed fails (e.g. permission error because database doesn't exist)
+          setData(initialData);
         }
         setLoading(false);
       }
     }, (error) => {
+      clearTimeout(safetyTimeout);
       console.error("Firestore listening error: ", error);
       // Fall back to initial static data in case of permissions or connection failures
       setData(initialData);
       setLoading(false);
     });
 
-    return unsubscribe;
+    return () => {
+      clearTimeout(safetyTimeout);
+      unsubscribe();
+    };
   }, []);
 
   // Save/Update portfolio data in Firestore
