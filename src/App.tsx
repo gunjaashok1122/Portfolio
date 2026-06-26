@@ -55,18 +55,17 @@ function PortfolioApp() {
     };
   }, [isAdmin, loading]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-dark-bg flex justify-center items-center">
-        <div className="flex flex-col items-center space-y-4">
-          <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
-          <p className="text-gray-400 font-bold text-sm tracking-widest uppercase">Connecting to Database...</p>
-        </div>
-      </div>
-    );
-  }
-
   if (isAdmin) {
+    if (loading) {
+      return (
+        <div className="min-h-screen bg-dark-bg flex justify-center items-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+            <p className="text-gray-400 font-bold text-sm tracking-widest uppercase">Connecting to Database...</p>
+          </div>
+        </div>
+      );
+    }
     return <AdminPanel />;
   }
 
