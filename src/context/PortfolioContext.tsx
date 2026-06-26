@@ -1,9 +1,52 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { doc, setDoc, onSnapshot } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import type { User } from 'firebase/auth';
-import { db, storage, auth } from '../firebase';
+import { db, auth } from '../firebase';
+
+// Helper function to compress image and convert to Base64 (bypasses Firebase Storage Blaze plan)
+const compressImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 720; // 720px is perfect for portfolio card layouts
+        const MAX_HEIGHT = 480;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+        }
+        
+        // Compress as JPEG at 0.65 quality to keep size small (~20KB - 40KB)
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.65);
+        resolve(dataUrl);
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
+};
 
 // Data Interfaces
 export interface HeroData {
@@ -317,16 +360,13 @@ export const PortfolioProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   };
 
-  // Upload an image file to Firebase Storage and return its public download URL
+  // Compress image on the client-side and return its Base64 representation (no Storage required!)
   const uploadImage = async (file: File): Promise<string> => {
     try {
-      const uniqueName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '_')}`;
-      const fileRef = ref(storage, `uploads/${uniqueName}`);
-      await uploadBytes(fileRef, file);
-      const downloadUrl = await getDownloadURL(fileRef);
-      return downloadUrl;
+      const base64Url = await compressImage(file);
+      return base64Url;
     } catch (error) {
-      console.error("Error uploading image to Firebase Storage: ", error);
+      console.error("Error converting/compressing image: ", error);
       throw error;
     }
   };
