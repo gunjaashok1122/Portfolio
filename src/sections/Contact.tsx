@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, Check } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,6 +33,8 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
 );
 
 export const Contact: React.FC = () => {
+  const { data } = usePortfolio();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -78,8 +81,8 @@ export const Contact: React.FC = () => {
     setIsSubmitting(true);
     
     // Construct WhatsApp message template with form parameters
-    const whatsappText = `Hi Ashok,\n\nMy name is ${formData.name} (Email: ${formData.email}).\n\nI want to discuss a *${formData.projectType}* project.\nEstimated Budget: *${formData.budget}*.\n\nProject details:\n"${formData.message}"`;
-    const whatsappUrl = `https://wa.me/919398972962?text=${encodeURIComponent(whatsappText)}`;
+    const whatsappText = `Hi ${data.hero.name},\n\nMy name is ${formData.name} (Email: ${formData.email}).\n\nI want to discuss a *${formData.projectType}* project.\nEstimated Budget: *${formData.budget}*.\n\nProject details:\n"${formData.message}"`;
+    const whatsappUrl = `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(whatsappText)}`;
     
     // Open WhatsApp in a new tab/window
     window.open(whatsappUrl, '_blank');
@@ -106,9 +109,9 @@ export const Contact: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         {/* Title */}
         <div className="text-center max-w-xl mx-auto mb-16 reveal">
-          <p className="text-xs font-bold text-primary tracking-widest uppercase mb-2">Get In Touch</p>
+          <p className="text-xs font-bold text-primary tracking-widest uppercase mb-2">{data.contact.title}</p>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Let's Build Something Amazing
+            {data.contact.heading}
           </h2>
           <div className="h-1 w-12 bg-gradient-to-r from-primary to-secondary mx-auto mt-4 rounded-full" />
         </div>
@@ -119,17 +122,17 @@ export const Contact: React.FC = () => {
           {/* Left Column: Contact Cards */}
           <div className="lg:col-span-5 flex flex-col space-y-6 text-left reveal">
             <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug">
-              Got a concept in mind? Let's discuss and convert it to reality.
+              {data.contact.introText}
             </h3>
             
             <p className="text-gray-400 leading-relaxed text-sm sm:text-base">
-              I am open to contract positions, freelance projects, or general tech queries. Drop an email, send a call, or use the interactive budget planner.
+              {data.contact.description}
             </p>
 
             {/* Address Cards */}
             <div className="space-y-4 pt-4">
               <a
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=gunjaashok1122@gmail.com"
+                href={`https://mail.google.com/mail/?view=cm&fs=1&to=${data.contact.email}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass-panel p-4.5 rounded-2xl flex items-center space-x-4 border border-dark-border/10 hover:border-primary/20 transition-all group"
@@ -139,12 +142,12 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase font-semibold">Email Me (Gmail)</p>
-                  <p className="text-sm font-bold text-white mt-0.5">gunjaashok1122@gmail.com</p>
+                  <p className="text-sm font-bold text-white mt-0.5">{data.contact.email}</p>
                 </div>
               </a>
 
               <a
-                href="tel:+919398972962"
+                href={`tel:${data.contact.phone}`}
                 className="glass-panel p-4.5 rounded-2xl flex items-center space-x-4 border border-dark-border/10 hover:border-primary/20 transition-all group"
               >
                 <div className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-primary group-hover:text-secondary transition-colors">
@@ -152,7 +155,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase font-semibold">Call Me</p>
-                  <p className="text-sm font-bold text-white mt-0.5">+91 9398972962</p>
+                  <p className="text-sm font-bold text-white mt-0.5">{data.contact.phone}</p>
                 </div>
               </a>
 
@@ -162,7 +165,7 @@ export const Contact: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-xs text-gray-500 uppercase font-semibold">Location</p>
-                  <p className="text-sm font-bold text-white mt-0.5">Hyderabad, Telangana, India</p>
+                  <p className="text-sm font-bold text-white mt-0.5">{data.contact.location}</p>
                 </div>
               </div>
             </div>
@@ -171,38 +174,46 @@ export const Contact: React.FC = () => {
             <div className="space-y-3 pt-6 border-t border-dark-border/15">
               <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Connect Digitally</h4>
               <div className="flex space-x-3.5">
-                <a
-                  href="https://github.com/gunjaashok1122"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
-                >
-                  <GithubIcon className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/gunjaashok/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
-                >
-                  <LinkedinIcon className="w-5 h-5" />
-                </a>
-                 <a
-                  href="https://www.instagram.com/gunjaashok1122/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
-                >
-                  <InstagramIcon className="w-5 h-5" />
-                </a>
-                <a
-                  href="https://www.youtube.com/@gunjaashok1122"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
-                >
-                  <YoutubeIcon className="w-5 h-5" />
-                </a>
+                {data.hero.socialLinks.github && (
+                  <a
+                    href={data.hero.socialLinks.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
+                  >
+                    <GithubIcon className="w-5 h-5" />
+                  </a>
+                )}
+                {data.hero.socialLinks.linkedin && (
+                  <a
+                    href={data.hero.socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
+                  >
+                    <LinkedinIcon className="w-5 h-5" />
+                  </a>
+                )}
+                {data.hero.socialLinks.instagram && (
+                  <a
+                    href={data.hero.socialLinks.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
+                  >
+                    <InstagramIcon className="w-5 h-5" />
+                  </a>
+                )}
+                {data.hero.socialLinks.youtube && (
+                  <a
+                    href={data.hero.socialLinks.youtube}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 rounded-xl bg-slate-900 border border-dark-border/40 text-gray-400 hover:text-white hover:border-primary/30 transition-all shadow-md cursor-pointer hover:scale-105"
+                  >
+                    <YoutubeIcon className="w-5 h-5" />
+                  </a>
+                )}
               </div>
             </div>
 

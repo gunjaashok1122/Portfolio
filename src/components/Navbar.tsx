@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Terminal } from 'lucide-react';
+import { usePortfolio } from '../context/PortfolioContext';
 
 interface NavLink {
   label: string;
@@ -16,6 +17,7 @@ const navLinks: NavLink[] = [
 ];
 
 export const Navbar: React.FC = () => {
+  const { data } = usePortfolio();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -89,7 +91,7 @@ export const Navbar: React.FC = () => {
             <Terminal className="w-4 h-4 text-white" />
           </div>
           <span className="bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent group-hover:text-primary transition-colors duration-300">
-            Gunja Ashok
+            {data.hero.name}
           </span>
         </a>
 

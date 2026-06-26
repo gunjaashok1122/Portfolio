@@ -1,22 +1,6 @@
 import React from 'react';
 import { ExternalLink, Sparkles } from 'lucide-react';
-
-import foodPlazaImg from '../assets/SVS MOCKUPChatGPT.png';
-import schoolImg from '../assets/tapovan Vidyalayam chatgpt.png';
-import makefitImg from '../assets/makefit_responsive.png';
-import randomQuoteImg from '../assets/random_quote.jpg';
-import levelUpImg from '../assets/LevelUp Life ChatGPT.png';
-
-interface Project {
-  name: string;
-  category: string;
-  description: string;
-  tech: string[];
-  image: string;
-  demoUrl: string;
-  githubUrl: string;
-  imageFit?: string;
-}
+import { usePortfolio } from '../context/PortfolioContext';
 
 const GithubIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -25,60 +9,9 @@ const GithubIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-const projects: Project[] = [
-  {
-    name: 'Sri Venkata Sai Food Plaza',
-    category: 'Restaurant Website',
-    description: 'Modern restaurant website featuring digital menu showcase, banquet hall event details, interactive food gallery, and direct table reservations system.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
-    image: foodPlazaImg,
-    demoUrl: 'https://svsfoodplaza.com',
-    githubUrl: 'https://github.com/gunjaashok1122',
-    imageFit: 'object-cover object-top'
-  },
-  {
-    name: 'Tapovan Vidyalayam',
-    category: 'School Portal',
-    description: 'Professional educational institute portal featuring online admissions, digital academics guide, event calendars, facilities gallery, and contact pipelines.',
-    tech: ['React.js', 'Firebase', 'Tailwind CSS', 'Vite'],
-    image: schoolImg,
-    demoUrl: 'https://tapovanvidyalayam.edu.in',
-    githubUrl: 'https://github.com/gunjaashok1122',
-    imageFit: 'object-cover object-top'
-  },
-  {
-    name: 'LevelUp Life',
-    category: 'Gamified Life Organizer',
-    description: 'A mobile & web life organizer that turns task management, habit building, fitness tracking, and calendar schedules into a gamified RPG experience.',
-    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Capacitor', 'Firebase'],
-    image: levelUpImg,
-    demoUrl: 'https://leveluplifess.netlify.app',
-    githubUrl: 'https://github.com/gunjaashok1122/LevelUp_Life',
-    imageFit: 'object-contain p-4'
-  },
-  {
-    name: 'MakeFit Tracker',
-    category: 'Fitness Platform (Mobile/Web)',
-    description: 'Sleek cross-platform health tracker built using Flutter. Integrates customized workout planners, caloric logging gauges, weight analytics, and fully responsive layouts.',
-    tech: ['Flutter', 'Dart', 'Firebase', 'Netlify Web App'],
-    image: makefitImg,
-    demoUrl: 'https://makefitss.netlify.app',
-    githubUrl: 'https://github.com/gunjaashok1122/codealpha_Fitness-tracker',
-    imageFit: 'object-contain p-4'
-  },
-  {
-    name: 'Random Quotes For You',
-    category: 'Expo Mobile App',
-    description: 'Interactive motivational quote generator app. Features rapid-fetch APIs, custom categories, user local favorites storage, and beautiful share card builders.',
-    tech: ['React Native', 'Expo', 'Tailwind CSS', 'REST API'],
-    image: randomQuoteImg,
-    demoUrl: 'https://random-quotesssss.netlify.app',
-    githubUrl: 'https://github.com/gunjaashok1122/codealpha_Random_Quote_Generator',
-    imageFit: 'object-contain p-4'
-  }
-];
-
 export const Projects: React.FC = () => {
+  const { data } = usePortfolio();
+
   return (
     <section id="projects" className="py-24 relative overflow-hidden md:px-12 px-6 border-t border-dark-border/10">
 
@@ -94,7 +27,7 @@ export const Projects: React.FC = () => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {projects.map((project, idx) => (
+          {data.projects.map((project, idx) => (
             <div
               key={idx}
               className="glass-panel rounded-2xl overflow-hidden flex flex-col h-full group relative border border-dark-border/10 hover:border-primary/25 transition-all duration-500 reveal"

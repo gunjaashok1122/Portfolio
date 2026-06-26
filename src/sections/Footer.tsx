@@ -31,7 +31,11 @@ const YoutubeIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+import { usePortfolio } from '../context/PortfolioContext';
+
 export const Footer: React.FC = () => {
+  const { data } = usePortfolio();
+
   const scrollToSection = (id: string) => {
     const element = document.querySelector(id);
     if (element) {
@@ -58,7 +62,7 @@ export const Footer: React.FC = () => {
             <div className="w-7.5 h-7.5 rounded-lg bg-gradient-to-tr from-primary to-secondary flex items-center justify-center shadow-md">
               <Terminal className="w-3.5 h-3.5 text-white" />
             </div>
-            <span className="text-gradient">Gunja Ashok</span>
+            <span className="text-gradient">{data.hero.name}</span>
           </a>
 
           {/* Quick Links */}
@@ -80,46 +84,57 @@ export const Footer: React.FC = () => {
 
           {/* Social Icons */}
           <div className="flex space-x-4">
-            <a
-              href="https://github.com/gunjaashok1122"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <GithubIcon className="w-4.5 h-4.5" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/gunjaashok/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <LinkedinIcon className="w-4.5 h-4.5" />
-            </a>
-            <a
-              href="https://www.instagram.com/gunjaashok1122/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <InstagramIcon className="w-4.5 h-4.5" />
-            </a>
-            <a
-              href="https://www.youtube.com/@gunjaashok1122"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <YoutubeIcon className="w-4.5 h-4.5" />
-            </a>
+            {data.hero.socialLinks.github && (
+              <a
+                href={data.hero.socialLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <GithubIcon className="w-4.5 h-4.5" />
+              </a>
+            )}
+            {data.hero.socialLinks.linkedin && (
+              <a
+                href={data.hero.socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <LinkedinIcon className="w-4.5 h-4.5" />
+              </a>
+            )}
+            {data.hero.socialLinks.instagram && (
+              <a
+                href={data.hero.socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <InstagramIcon className="w-4.5 h-4.5" />
+              </a>
+            )}
+            {data.hero.socialLinks.youtube && (
+              <a
+                href={data.hero.socialLinks.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-400 hover:text-white transition-colors cursor-pointer"
+              >
+                <YoutubeIcon className="w-4.5 h-4.5" />
+              </a>
+            )}
           </div>
         </div>
 
         {/* Footer Bottom */}
         <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-semibold text-gray-500">
-          <p>© {new Date().getFullYear()} Gunja Ashok. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {data.hero.name}. All rights reserved.
+            <a href="#admin" className="ml-2.5 hover:text-white transition-all cursor-pointer opacity-30 hover:opacity-100 font-bold">| Console</a>
+          </p>
           <p className="flex items-center gap-1.5">
-            Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" /> by <span className="text-gray-300 font-bold">Gunja Ashok</span>
+            Made with <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500 animate-pulse" /> by <span className="text-gray-300 font-bold">{data.hero.name}</span>
           </p>
         </div>
 

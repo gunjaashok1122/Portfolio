@@ -1,51 +1,10 @@
 import React from 'react';
 import { Calendar, Briefcase } from 'lucide-react';
-
-interface TimelineItem {
-  role: string;
-  company: string;
-  period: string;
-  description: string;
-  achievements: string[];
-}
-
-const experiences: TimelineItem[] = [
-  {
-    role: 'Freelance Web Developer',
-    company: 'Self-Employed / Digital Contractor',
-    period: '2024 - Present',
-    description: 'Building custom-designed high-performance websites for restaurants, academic institutions, and growing local businesses using modern React, Next.js, and backend clouds.',
-    achievements: [
-      'Successfully deployed 20+ responsive client websites, achieving a 100% satisfaction rate.',
-      'Reduced loading times by 40% across client sites using code splitting and asset optimization.',
-      'Constructed complete booking and admissions workflows, reducing manual operations for restaurant and school management.'
-    ]
-  },
-  {
-    role: 'UI/UX Designer & Frontend Developer',
-    company: 'Freelance Projects',
-    period: '2023 - 2024',
-    description: 'Collaborated with clients to design wireframes, high-fidelity mockups, and convert design prototypes into pixel-perfect responsive HTML/CSS/JS frontend codebases.',
-    achievements: [
-      'Created wireframes and user-experience prototypes in Figma for SaaS projects.',
-      'Ensured 100% responsive styling compliance using custom CSS grid systems and Tailwind CSS.',
-      'Created micro-interactions and animations that improved page visitor retention by 15%.'
-    ]
-  },
-  {
-    role: 'Web Development Learner & Intern',
-    company: 'Open Source / Academic Training',
-    period: '2022 - 2023',
-    description: 'Learned modern software development practices, git workflows, API architectures, and Javascript fundamentals through community mentorship and building open-source web projects.',
-    achievements: [
-      'Developed and published interactive utility tools on GitHub using React and basic state libraries.',
-      'Mastered Git and version control systems to collaborate effectively on developer projects.',
-      'Participated in code review cycles, learning writing clean, maintainable, and dry components.'
-    ]
-  }
-];
+import { usePortfolio } from '../context/PortfolioContext';
 
 export const Experience: React.FC = () => {
+  const { data } = usePortfolio();
+
   return (
     <section id="experience" className="py-24 relative overflow-hidden md:px-12 px-6 border-t border-dark-border/10">
       
@@ -61,7 +20,7 @@ export const Experience: React.FC = () => {
 
         {/* Timeline Track Container */}
         <div className="relative border-l border-dark-border/40 pl-6 sm:pl-10 space-y-12 text-left">
-          {experiences.map((exp, idx) => (
+          {data.experiences.map((exp, idx) => (
             <div key={idx} className="relative group reveal">
               {/* Timeline Connector Indicator Node */}
               <div className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-4 h-4 rounded-full bg-slate-950 border-2 border-primary group-hover:border-secondary group-hover:scale-125 transition-all duration-300 shadow-md shadow-primary/30" />
